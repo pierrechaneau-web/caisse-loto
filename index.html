@@ -22,31 +22,32 @@
 
       --dark: #0b1220;
 
-      --btn: 42px;
-      --valW: 52px;
-      --rowPadY: 8px;
+      /* ✅ plus compact */
+      --btn: 38px;
+      --valW: 46px;
+      --rowPadY: 6px;
       --rowPadX: 10px;
       --radius: 14px;
 
-      --h1: 20px;
-      --h3: 15px;
-      --label: 15px;
-      --price: 15px;
-      --total: 28px;
+      --h1: 19px;
+      --h3: 14px;
+      --label: 14px;
+      --price: 14px;
+      --total: 26px;
 
-      /* Hauteur approximative de la barre du bas (Total + bouton) */
-      --bottomBarSpace: 140px;
+      /* ✅ hauteur approximative de la barre fixe (Total + bouton) */
+      --bottomBarSpace: 175px;
     }
 
     @media (max-width: 380px){
       :root{
-        --btn: 40px;
-        --valW: 48px;
-        --h1: 19px;
-        --label: 14px;
-        --price: 14px;
-        --total: 27px;
-        --bottomBarSpace: 150px;
+        --btn: 36px;
+        --valW: 44px;
+        --h1: 18px;
+        --label: 13.5px;
+        --price: 13.5px;
+        --total: 25px;
+        --bottomBarSpace: 185px;
       }
     }
 
@@ -57,9 +58,9 @@
     }
     * { -webkit-tap-highlight-color: transparent; }
 
+    /* ✅ laisse TOUJOURS assez de place sous la liste pour ne jamais être cachée */
     .wrap{
       padding: 10px;
-      /* ✅ IMPORTANT : laisse de la place pour que la liste ne soit pas cachée par la barre sticky */
       padding-bottom: calc(var(--bottomBarSpace) + env(safe-area-inset-bottom));
       min-height: 100%;
       box-sizing: border-box;
@@ -100,7 +101,7 @@
     .badge{
       font-size: 11px;
       font-weight: 900;
-      padding: 4px 10px;
+      padding: 3px 10px;
       border-radius: 999px;
       letter-spacing: .3px;
       color: #fff;
@@ -117,7 +118,7 @@
     .list{
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 6px;
     }
 
     .item{
@@ -130,13 +131,21 @@
       padding: var(--rowPadY) var(--rowPadX);
       box-sizing: border-box;
     }
-    .item.normRow{ border-left: 7px solid var(--neutral); }
-    .item.specRow{ border-left: 7px solid var(--blue); }
+    .item.normRow{ border-left: 6px solid var(--neutral); }
+    .item.specRow{ border-left: 6px solid var(--blue); }
 
     .label{ flex: 1; min-width: 0; }
-    .label b{ display:block; font-size: var(--label); line-height: 1.15; }
+    .label b{
+      display:block;
+      font-size: var(--label);
+      line-height: 1.12;
+    }
 
-    .price{ font-weight: 900; font-size: var(--price); white-space: nowrap; }
+    .price{
+      font-weight: 900;
+      font-size: var(--price);
+      white-space: nowrap;
+    }
 
     .qty{ display:flex; align-items:center; gap: 8px; }
 
@@ -153,7 +162,7 @@
       border: 0;
       border-radius: 12px;
       background: #e5e7eb;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 900;
       line-height: 1;
     }
@@ -167,14 +176,14 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 900;
       background:#fff;
     }
 
-    /* Barre du bas sticky */
+    /* ✅ barre fixe en bas */
     .bottom-bar{
-      position: fixed; /* ✅ encore plus stable que sticky */
+      position: fixed;
       left: 10px;
       right: 10px;
       bottom: calc(10px + env(safe-area-inset-bottom));
@@ -200,7 +209,7 @@
     }
 
     .raz{
-      height: 44px;
+      height: 42px;
       border: 0;
       border-radius: var(--radius);
       background: #e5e7eb;
@@ -208,6 +217,9 @@
       font-weight: 900;
     }
     .raz:active{ transform: scale(0.99); }
+
+    /* option : un peu moins de place au dessus pour que ça fasse “pro” */
+    .card { padding-bottom: 6px; }
   </style>
 </head>
 
@@ -228,8 +240,7 @@
     </div>
   </div>
 
-  <!-- Barre fixe (ne recouvre plus le contenu grâce au padding-bottom de .wrap) -->
-  <div class="bottom-bar">
+  <div class="bottom-bar" id="bottomBar">
     <div class="total-bar">
       <div>Total à payer</div>
       <div class="amt" id="total">0 €</div>
@@ -299,6 +310,8 @@
     for (const k in state) state[k] = 0;
     for (const k in state) document.getElementById("val-" + k).textContent = "0";
     calc();
+    // remonte en haut après reset (pratique à la caisse)
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
   calc();
