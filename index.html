@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caisse Loto - FC des Nestes</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:10px;background:#f6f7f9}
+    .card{background:#fff;border-radius:14px;padding:10px;box-shadow:0 6px 20px rgba(0,0,0,.08);max-width:760px;margin:auto}
+    h1{margin:0 0 6px;font-size:18px}
+
+    /* Sections */
+    .section{border-radius:14px;padding:8px;margin-top:10px}
+    .section h3{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
+    .badge{font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px}
+
+    /* Normales : neutre */
+    .norm{background:#f3f4f6;border:1px solid #e5e7eb}
+    .norm .badge{background:#374151;color:#fff}
+
+    /* Spéciales : bleu (planches bleues) */
+    .spec{background:#eef6ff;border:1px solid #cfe6ff}
+    .spec .badge{background:#2563eb;color:#fff}
+    .spec h3{color:#2563eb}
+
+    .list{display:flex;flex-direction:column;gap:6px}
+
+    /* Lignes compactes */
+    .item{
+      display:flex;align-items:center;gap:8px;
+      border-radius:12px;padding:6px 8px;
+      border:1px solid #e5e7eb;background:#fff;
+    }
+    .item.normRow{border-left:6px solid #9ca3af}   /* gris */
+    .item.specRow{border-left:6px solid #2563eb}   /* bleu */
+
+    .label{flex:1;min-width:0}
+    .label b{display:block;font-size:14px;line-height:1.1}
+    .price{font-weight:900;white-space:nowrap;font-size:14px}
+
+    /* boutons compacts */
+    .qty{display:flex;align-items:center;gap:6px}
+    .btn{
+      width:38px;height:36px;border:0;border-radius:10px;
+      background:#e5e7eb;font-size:20px;cursor:pointer;line-height:1;
+    }
+    .val{
+      width:46px;height:36px;border:1px solid #d0d5dd;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:16px;font-weight:900;background:#fff;
+    }
+
+    /* Total sticky */
+    .sticky-total{
+      position:sticky; bottom:0;
+      margin-top:10px;
+      background:#0b1220;color:#fff;border-radius:14px;
+      padding:10px 12px;
+      display:flex;justify-content:space-between;align-items:center;
+      box-shadow:0 -6px 20px rgba(0,0,0,.15);
+    }
+    .sticky-total .amt{font-size:26px;font-weight:900}
+
+    /* Un seul bouton */
+    .btns{margin-top:8px}
+    button.action{
+      width:100%;
+      height:42px;border-radius:12px;border:0;
+      font-size:16px;font-weight:800;cursor:pointer;
+      background:#e5e7eb;
+    }
+    button.action:active{transform:scale(0.99)}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🧾 Caisse Loto — FC des Nestes</h1>
+
+    <div class="section norm">
+      <h3><span class="badge">NORMALES</span> Cartons personnels acceptés</h3>
+      <div class="list" id="normal"></div>
+    </div>
+
+    <div class="section spec">
+      <h3><span class="badge">SPÉCIALES</span> Planches bleues</h3>
+      <div class="list" id="spec"></div>
+    </div>
+
+    <div class="sticky-total">
+      <div>Total à payer</div>
+      <div class="amt" id="total">0 €</div>
+    </div>
+
+    <div class="btns">
+      <button class="action" id="raz">Remise à zéro</button>
+    </div>
+  </div>
+
+<script>
+  const itemsNormal = [
+    { id:"c1",  label:"1 carton", price:3 },
+    { id:"n6",  label:"Planche 6 cartons", price:10 },
+    { id:"n12", label:"Planche 12 cartons", price:15 },
+    { id:"n18", label:"Planche 18 cartons", price:20 },
+    { id:"n24", label:"Planche 24 cartons", price:25 },
+  ];
+
+  const itemsSpec = [
+    { id:"s3", label:"Planche 3 cartons", price:3 },
+    { id:"s6", label:"Planche 6 cartons", price:6 },
+  ];
+
+  const state = Object.fromEntries([...itemsNormal, ...itemsSpec].map(i => [i.id, 0]));
+
+  function renderItem(it, cssRow){
+    return `
+      <div class="item ${cssRow}">
+        <div class="label"><b>${it.label}</b></div>
+        <div class="price">${it.price}€</div>
+        <div class="qty">
+          <button class="btn" data-act="dec" data-id="${it.id}">−</button>
+          <div class="val" id="val-${it.id}">0</div>
+          <button class="btn" data-act="inc" data-id="${it.id}">+</button>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById("normal").innerHTML = itemsNormal.map(it => renderItem(it, "normRow")).join("");
+  document.getElementById("spec").innerHTML   = itemsSpec.map(it => renderItem(it, "specRow")).join("");
+
+  function calc(){
+    let total = 0;
+    for (const it of itemsNormal) total += state[it.id] * it.price;
+    for (const it of itemsSpec) total += state[it.id] * it.price;
+    document.getElementById("total").textContent = total + " €";
+  }
+
+  function update(id){
+    document.getElementById("val-" + id).textContent = state[id];
+    calc();
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const act = btn.dataset.act;
+    if (act === "inc") state[id] += 1;
+    if (act === "dec") state[id] = Math.max(0, state[id] - 1);
+    update(id);
+  });
+
+  document.getElementById("raz").addEventListener("click", () => {
+    for (const k in state) state[k] = 0;
+    for (const k in state) document.getElementById("val-" + k).textContent = "0";
+    calc();
+  });
+
+  calc();
+</script>
+</body>
+</html>
