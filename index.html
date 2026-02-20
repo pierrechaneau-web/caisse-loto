@@ -20,34 +20,37 @@
       --blue: #2563eb;
       --blueBg: #eef6ff;
 
+      --green: #16a34a;
+      --greenBg: #eefcf2;
+
       --dark: #0b1220;
 
-      /* ✅ plus compact */
-      --btn: 38px;
-      --valW: 46px;
-      --rowPadY: 6px;
-      --rowPadX: 10px;
-      --radius: 14px;
+      /* ✅ Version compacte */
+      --btn: 34px;
+      --valW: 40px;
+      --rowPadY: 5px;
+      --rowPadX: 8px;
+      --radius: 13px;
 
-      --h1: 19px;
-      --h3: 14px;
-      --label: 14px;
-      --price: 14px;
-      --total: 26px;
+      --h1: 17px;
+      --h3: 13px;
+      --label: 13px;
+      --price: 13px;
+      --total: 23px;
 
-      /* ✅ hauteur approximative de la barre fixe (Total + bouton) */
-      --bottomBarSpace: 175px;
+      --bottomBarSpace: 150px;
     }
 
     @media (max-width: 380px){
       :root{
-        --btn: 36px;
-        --valW: 44px;
-        --h1: 18px;
-        --label: 13.5px;
-        --price: 13.5px;
-        --total: 25px;
-        --bottomBarSpace: 185px;
+        --btn: 32px;
+        --valW: 38px;
+        --h1: 16px;
+        --h3: 12px;
+        --label: 12px;
+        --price: 12px;
+        --total: 22px;
+        --bottomBarSpace: 155px;
       }
     }
 
@@ -58,9 +61,8 @@
     }
     * { -webkit-tap-highlight-color: transparent; }
 
-    /* ✅ laisse TOUJOURS assez de place sous la liste pour ne jamais être cachée */
     .wrap{
-      padding: 10px;
+      padding: 8px;
       padding-bottom: calc(var(--bottomBarSpace) + env(safe-area-inset-bottom));
       min-height: 100%;
       box-sizing: border-box;
@@ -68,42 +70,41 @@
 
     .card{
       width: 100%;
-      max-width: none;
-      margin: 0;
       background: var(--card);
       border-radius: var(--radius);
       box-shadow: 0 6px 20px rgba(0,0,0,.08);
-      padding: 10px;
+      padding: 8px;
       box-sizing: border-box;
     }
 
     h1{
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       font-size: var(--h1);
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .section{
       border-radius: var(--radius);
-      padding: 8px;
-      margin-top: 8px;
+      padding: 6px;
+      margin-top: 6px;
       border: 1px solid var(--border);
     }
 
     .section h3{
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       font-size: var(--h3);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      line-height: 1.1;
     }
 
     .badge{
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
-      padding: 3px 10px;
+      padding: 3px 8px;
       border-radius: 999px;
-      letter-spacing: .3px;
+      letter-spacing: .2px;
       color: #fff;
       white-space: nowrap;
     }
@@ -115,39 +116,51 @@
     .spec .badge{ background: var(--blue); }
     .spec h3{ color: var(--blue); }
 
+    .tomb{ background: var(--greenBg); border-color:#ccefd8; }
+    .tomb .badge{ background: var(--green); }
+    .tomb h3{ color: #15803d; }
+
     .list{
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .item{
       display:flex;
       align-items:center;
-      gap: 10px;
+      gap: 8px;
       background:#fff;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 11px;
       padding: var(--rowPadY) var(--rowPadX);
       box-sizing: border-box;
     }
-    .item.normRow{ border-left: 6px solid var(--neutral); }
-    .item.specRow{ border-left: 6px solid var(--blue); }
+
+    .item.normRow{ border-left: 5px solid var(--neutral); }
+    .item.specRow{ border-left: 5px solid var(--blue); }
+    .item.tombRow{ border-left: 5px solid var(--green); }
 
     .label{ flex: 1; min-width: 0; }
     .label b{
       display:block;
       font-size: var(--label);
-      line-height: 1.12;
+      line-height: 1.08;
     }
 
     .price{
       font-weight: 900;
       font-size: var(--price);
       white-space: nowrap;
+      min-width: 34px;
+      text-align: right;
     }
 
-    .qty{ display:flex; align-items:center; gap: 8px; }
+    .qty{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+    }
 
     button{
       touch-action: manipulation;
@@ -160,11 +173,12 @@
       width: var(--btn);
       height: var(--btn);
       border: 0;
-      border-radius: 12px;
+      border-radius: 10px;
       background: #e5e7eb;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
       line-height: 1;
+      padding: 0;
     }
     .btn:active{ transform: scale(0.98); }
 
@@ -172,23 +186,23 @@
       width: var(--valW);
       height: var(--btn);
       border: 1px solid #d0d5dd;
-      border-radius: 12px;
+      border-radius: 10px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 900;
       background:#fff;
     }
 
-    /* ✅ barre fixe en bas */
+    /* Barre fixe bas */
     .bottom-bar{
       position: fixed;
-      left: 10px;
-      right: 10px;
-      bottom: calc(10px + env(safe-area-inset-bottom));
+      left: 8px;
+      right: 8px;
+      bottom: calc(8px + env(safe-area-inset-bottom));
       display: grid;
-      gap: 8px;
+      gap: 6px;
       z-index: 999;
     }
 
@@ -196,7 +210,7 @@
       background: var(--dark);
       color: #fff;
       border-radius: var(--radius);
-      padding: 10px 12px;
+      padding: 8px 10px;
       display:flex;
       justify-content: space-between;
       align-items:center;
@@ -209,17 +223,14 @@
     }
 
     .raz{
-      height: 42px;
+      height: 38px;
       border: 0;
       border-radius: var(--radius);
       background: #e5e7eb;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 900;
     }
     .raz:active{ transform: scale(0.99); }
-
-    /* option : un peu moins de place au dessus pour que ça fasse “pro” */
-    .card { padding-bottom: 6px; }
   </style>
 </head>
 
@@ -237,10 +248,15 @@
         <h3><span class="badge">SPÉCIALES</span> Planches bleues</h3>
         <div class="list" id="spec"></div>
       </div>
+
+      <div class="section tomb">
+        <h3><span class="badge">TOMBOLA</span> Tickets</h3>
+        <div class="list" id="tombola"></div>
+      </div>
     </div>
   </div>
 
-  <div class="bottom-bar" id="bottomBar">
+  <div class="bottom-bar">
     <div class="total-bar">
       <div>Total à payer</div>
       <div class="amt" id="total">0 €</div>
@@ -262,7 +278,14 @@
     { id:"s6", label:"Planche 6 cartons", price:6 },
   ];
 
-  const state = Object.fromEntries([...itemsNormal, ...itemsSpec].map(i => [i.id, 0]));
+  const itemsTombola = [
+    { id:"t1", label:"1 ticket", price:2 },
+    { id:"t3", label:"3 tickets", price:5 },
+    { id:"t7", label:"7 tickets", price:10 },
+  ];
+
+  const allItems = [...itemsNormal, ...itemsSpec, ...itemsTombola];
+  const state = Object.fromEntries(allItems.map(i => [i.id, 0]));
 
   function renderItem(it, cssRow){
     return `
@@ -278,13 +301,13 @@
     `;
   }
 
-  document.getElementById("normal").innerHTML = itemsNormal.map(it => renderItem(it, "normRow")).join("");
-  document.getElementById("spec").innerHTML   = itemsSpec.map(it => renderItem(it, "specRow")).join("");
+  document.getElementById("normal").innerHTML  = itemsNormal.map(i => renderItem(i, "normRow")).join("");
+  document.getElementById("spec").innerHTML    = itemsSpec.map(i => renderItem(i, "specRow")).join("");
+  document.getElementById("tombola").innerHTML = itemsTombola.map(i => renderItem(i, "tombRow")).join("");
 
   function calc(){
     let total = 0;
-    for (const it of itemsNormal) total += state[it.id] * it.price;
-    for (const it of itemsSpec) total += state[it.id] * it.price;
+    for (const it of allItems) total += state[it.id] * it.price;
     document.getElementById("total").textContent = total + " €";
   }
 
@@ -308,9 +331,11 @@
 
   document.getElementById("raz").addEventListener("click", () => {
     for (const k in state) state[k] = 0;
-    for (const k in state) document.getElementById("val-" + k).textContent = "0";
+    for (const k in state) {
+      const el = document.getElementById("val-" + k);
+      if (el) el.textContent = "0";
+    }
     calc();
-    // remonte en haut après reset (pratique à la caisse)
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
